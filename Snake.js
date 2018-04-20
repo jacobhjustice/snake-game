@@ -1,16 +1,27 @@
 window.onload = function(){
-    Snake.load();
+    document.getElementById("play").addEventListener("click", function(){
+        Snake.load();
+    });
+    
 };
 
 var Snake = {
     table: undefined,
-    SnakeHeadCell: undefined,
     positionArray: [],
     direction: "R",
+    lastMove: "R",
+    speed: 400,
+    pellets: 0,
     load: function(){
         var self = this; 
-        
+        document.getElementById("menu").style.display = "none";
         this.table = document.getElementById("content");
+        this.table.style.display = "table";
+        this.speed = 400;
+        this.pellets = 0;
+        this.lastMove = "R";
+        this.direction = "R";
+        this.positionArray = [];
         var html = "";
         for(y = 0; y < 15; y++){
             html += "<div class='row'>";
@@ -30,16 +41,20 @@ var Snake = {
         document.addEventListener("keypress", function(e){
             switch(e.key){
                 case "w":
-                    self.direction = "U";
+                    if(self.lastMove != "D")
+                        self.direction = "U";
                     break;
                 case "a":
-                    self.direction = "L";
+                    if(self.lastMove != "R")
+                        self.direction = "L";
                     break;
                 case "s":
-                    self.direction = "D";
+                    if(self.lastMove != "U")
+                        self.direction = "D";
                     break;
                 case "d":
-                    self.direction = "R";
+                    if(self.lastMove != "L")
+                        self.direction = "R";
                     break;
             }
         });
@@ -70,8 +85,8 @@ var Snake = {
                 var newCell = document.querySelector("[data-x='" + _x + "'][data-y='" + _y +"']");
                 
                 //Off of the board
-                if(newCell == undefined){
-                    console.log("GAME OVER");
+                if(newCell == undefined || newCell.classList.contains("snake")){
+                    self.gameOver();
                     return;
                 }
                 
@@ -81,6 +96,9 @@ var Snake = {
                     newCell.classList.remove("pellet");
                     self.positionArray.unshift(newCell);
                     self.placePellet();
+                    self.pellets++;
+                    self.speed = self.speed > 50 ? self.speed * .9 : self.speed;
+                    
                 }
                 
                 //Normal move
@@ -92,9 +110,21 @@ var Snake = {
                     newCell.classList.add("Snake");
                     self.positionArray.unshift(newCell);
                 }
+                self.lastMove = self.direction;
                 self.move();
             //}
-        }, 100);
+        }, self.speed);
+    },
+    gameOver: function(){
+        var self = this;
+        setTimeout(function(){
+            self.table.style.display = "none";
+            document.getElementById("retry").style.display = "block";
+            document.getElementById("retry").addEventListener("click",  function(){
+                document.getElementById("retry").style.display = "none";
+                self.load();
+            });
+        }, 200);
     }
     
     

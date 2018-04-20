@@ -1,6 +1,43 @@
 body{
     background-color: #000000;
 }
+
+#menu{
+    margin: 0 auto;
+    margin-top: 100px;
+}
+#play{
+    margin: 0 auto;
+    cursor: pointer;
+    background-color: green;
+    color: white;
+    border-radius: 10px;
+    height:40px;
+    line-height: 40px;
+    width: 100px;
+    text-align: center;
+}
+#menu p{
+    color: gray;
+    width:50%;
+    margin: 0 auto;
+    margin-top:40px;
+    text-align: center;
+}
+#retry{
+    display: none;
+    margin: 0 auto;
+    cursor: pointer;
+    background-color: green;
+    color: white;
+    border-radius: 10px;
+    height:40px;
+    line-height: 40px;
+    width: 100px;
+    text-align: center;
+    margin-top: 100px;
+}
+
 #content{
     display: table;
     margin: 0 auto;
